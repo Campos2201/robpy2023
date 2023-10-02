@@ -138,36 +138,43 @@ def plota_vetor3(v: np.ndarray,
 
 
 def matriz_rotacao_x(theta: float) -> np.ndarray:
-
     """
      Função que retorna a matriz de rotação que leva um vetor de uma base 'a' para uma base 'b' gerada a partir da
      rotação da base 'a' em torno do eixo x por um ângulo 'theta' positivo em radianos.
      :param theta: ângulo de rotação
      :return: matriz de rotação
      """
+    # res = np.zeros([3, 3])
+    # res[0, 0] = 1
+    # res[1, 1], res[2, 2] = np.cos(theta), np.cos(theta)
+    # [res[2, 1], res[1, 2]] = -np.sin(theta), np.sin(theta)
 
-    res = np.zeros([3, 3])
-    res[0, 0] = 1
-    res[1, 1], res[2, 2] = np.cos(theta), np.cos(theta)
-    [res[2, 1], res[1, 2]] = -np.sin(theta), np.sin(theta)
+    s = np.sin(theta)
+    c = np.cos(theta)
 
-    return res
+    return np.asarray([[1, 0, 0],
+                       [0, c, s],
+                       [0, -s, c]])
 
 
 def matriz_rotacao_y(theta: float) -> np.ndarray:
-
     """
     Função que retorna a matriz de rotação que leva um vetor de uma base 'a' para uma base 'b' gerada a partir da
     rotação da base 'a' em torno do eixo y por um ângulo 'theta' positivo em radianos.
     :param theta: ângulo de rotação
     :return: matriz de rotação
     """
-    res = np.zeros([3, 3])
-    res[1, 1] = 1
-    res[0, 0], res[2, 2] = np.cos(theta), np.cos(theta)
-    res[0, 2], res[2, 0] = -np.sin(theta), np.sin(theta)
+    # res = np.zeros([3, 3])
+    # res[1, 1] = 1
+    # res[0, 0], res[2, 2] = np.cos(theta), np.cos(theta)
+    # res[0, 2], res[2, 0] = -np.sin(theta), np.sin(theta)
 
-    return res
+    s = np.sin(theta)
+    c = np.cos(theta)
+
+    return np.asarray([[c, 0, -s],
+                       [0, 1, 0],
+                       [s, 0, c]])
 
 
 def matriz_rotacao_z(theta: float) -> np.ndarray:
@@ -178,12 +185,16 @@ def matriz_rotacao_z(theta: float) -> np.ndarray:
     :param theta: ângulo de rotação
     :return: matriz de rotação
     """
-    res = np.zeros([3, 3])
-    res[2, 2] = 1
-    res[0, 0], res[1, 1] = np.cos(theta), np.cos(theta)
-    res[1, 0], res[0, 1] = -np.sin(theta), np.sin(theta)
+    # res = np.zeros([3, 3])
+    # res[2, 2] = 1
+    # res[0, 0], res[1, 1] = np.cos(theta), np.cos(theta)
+    # res[1, 0], res[0, 1] = -np.sin(theta), np.sin(theta)
+    s = np.sin(theta)
+    c = np.cos(theta)
 
-    return res
+    return np.asarray([[c, s, 0],
+                       [-s, c, 0],
+                       [0, 0, 1]])
 
 
 # Parte 3
@@ -195,7 +206,8 @@ def checa_vetor4(v: np.ndarray) -> None:
     :param v: vetor a verificar
     :return: nenhum.
     """
-    pass
+    if v.shape != (4, 1):
+        raise ValueError("O vetor deveria ser 4x1")
 
 
 def checa_matriz33(m: np.ndarray) -> None:
@@ -204,7 +216,8 @@ def checa_matriz33(m: np.ndarray) -> None:
     :param m: matriz a verificar
     :return: nenhum.
     """
-    pass
+    if m.shape != (3, 3):
+        raise ValueError('Matriz não é 3x3!')
 
 
 def checa_matriz44(m: np.ndarray) -> None:
@@ -213,7 +226,8 @@ def checa_matriz44(m: np.ndarray) -> None:
     :param m: matriz a verificar
     :return: nenhum.
     """
-    pass
+    if m.shape != (4, 4):
+        raise ValueError('Matriz não é 4x4!')
 
 
 def cria_vetor4(v3: np.ndarray) -> np.ndarray:
@@ -222,7 +236,8 @@ def cria_vetor4(v3: np.ndarray) -> np.ndarray:
     :param v3:
     :return:
     """
-    pass
+    checa_vetor3(v3)
+    return np.append(v3, np.asarray([[1]]), axis=0)
 
 
 def checa_matriz_rotacao(m3: np.ndarray, det_tol: float = 0.01) -> None:
@@ -233,7 +248,13 @@ def checa_matriz_rotacao(m3: np.ndarray, det_tol: float = 0.01) -> None:
     :param det_tol: tolerância do valor do determinante
     :return: não há
     """
-    pass
+    checa_matriz33(m3)
+    if det_tol < 0:
+        raise ValueError('A tolerancia para o determinante deve ser um valor nao negativo')
+
+    erro = np.abs(1 - np.linalg.det(m3))
+    if erro > det_tol:
+        raise ValueError('A matriz fornecida não possui determinante igual a 1')
 
 
 def cria_operador4(m_rot_b_a: np.ndarray = np.eye(3), v_o_a: np.ndarray = np.zeros([3, 1]), det_tol: float = 0.01) \

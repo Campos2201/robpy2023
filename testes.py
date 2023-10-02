@@ -27,4 +27,6 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 # a = rp.matriz_rotacao_z(60)
 # print(a)
+# --------------------------------------------------------------------------
+
 
