@@ -18,15 +18,14 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 # plt.ylabel('eixo y')
 # ax.set_zlabel('eixo z')
 # plt.show()
-
+#
 # a = rp.matriz_rotacao_x(60)
 # print(a)
-
+#
 # a = rp.matriz_rotacao_y(60)
 # print(a)
-
+#
 # a = rp.matriz_rotacao_z(60)
 # print(a)
 # --------------------------------------------------------------------------
-
 
